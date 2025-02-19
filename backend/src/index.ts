@@ -5,9 +5,10 @@ import mongoose from "mongoose";
 import jokeRoutes from "./routes/jokes.ts";
 
 dotenv.config({
-  path: process.env.NODE_ENV === 'production'
-    ? '.env.production'
-    : '.env.development'
+  path:
+    process.env.NODE_ENV === "production"
+      ? ".env.production"
+      : ".env.development",
 });
 
 const app = express();
@@ -16,10 +17,14 @@ const port = process.env.PORT || 3001;
 app.use(
   cors({
     origin: process.env.FRONTEND_URL || "http://localhost:3000",
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", "OPTIONS"],
     credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization"],
   }),
 );
+
+app.options('*', cors());
+
 app.use(express.json());
 
 app.use("/api", jokeRoutes);
