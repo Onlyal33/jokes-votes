@@ -4,9 +4,12 @@
   "main": "src/index.ts",
   "type": "module",
   "scripts": {
-    "dev": "NODE_ENV=development node --experimental-strip-types src/index.ts",
+    "dev": "npm run docker:up && npm run seed && NODE_ENV=development node --experimental-strip-types src/index.ts",
     "build": "tsc",
-    "start": "NODE_ENV=production node --experimental-strip-types src/index.ts"
+    "start": "NODE_ENV=production node --experimental-strip-types src/index.ts",
+    "docker:up": "node --experimental-strip-types src/scripts/docker.ts up",
+    "docker:down": "node --experimental-strip-types src/scripts/docker.ts down",
+    "seed": "NODE_ENV=development node --experimental-strip-types src/scripts/seed.ts"
   },
   "dependencies": {
     "cors": "^2.8.5",
@@ -19,6 +22,7 @@
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/node": "^22.13.4",
+    "docker-compose": "^1.1.1",
     "typescript": "^5.7.3"
   },
   "engines": {
