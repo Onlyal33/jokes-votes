@@ -1,28 +1,44 @@
-import { VoteStatus } from "../utils/voteUtils";
+"use client";
+import { useSession } from "@/contexts/SessionContext";
+import { VoteStatus } from "@/utils/voteUtils";
 import { useJokeContext } from "@/contexts/JokeContext";
 
 export default function VoteButton({ vote }: { vote: VoteStatus }) {
-  const { voteForJoke } = useJokeContext();
+  const { currentJoke, voteForJoke } = useJokeContext();
+  const { hasVoted, addVote } = useSession();
 
   const handleVote = async () => {
-    if (!vote.isAvailable) return;
-    voteForJoke(vote.label);
+    if (
+      !vote.isAvailable ||
+      !currentJoke ||
+      hasVoted(currentJoke.id, vote.label)
+    )
+      return;
+
+    try {
+      await voteForJoke(vote.label);
+      addVote(currentJoke.id, vote.label);
+    } catch (error) {
+      console.error("Error voting:", error);
+    }
   };
 
-  return vote.isAvailable ? (
+  const isVoted = currentJoke ? hasVoted(currentJoke.id, vote.label) : false;
+
+  return (
     <button
       onClick={handleVote}
-      className="text-2xl rounded-xl transition-all duration-200 hover:bg-gray-100 cursor-pointer"
+      disabled={isVoted}
+      className={`text-2xl rounded-xl transition-all duration-200 ${
+        isVoted
+          ? "bg-gray-200 cursor-not-allowed"
+          : "hover:bg-gray-100 cursor-pointer"
+      }`}
     >
       <span className="inline-flex items-center gap-1 px-3 py-2 rounded-xl text-sm bg-gray-100">
-        <span>{vote.label}</span>
+        {vote.label}
         <span className="font-medium">{vote.value}</span>
       </span>
     </button>
-  ) : (
-    <span className="inline-flex items-center gap-1 px-3 py-1 rounded-xl text-sm bg-gray-500">
-      <span>{vote.label}</span>
-      <span className="font-medium">{vote.value}</span>
-    </span>
   );
 }
