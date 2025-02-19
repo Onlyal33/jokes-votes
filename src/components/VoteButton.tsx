@@ -29,16 +29,29 @@ export default function VoteButton({ vote }: { vote: VoteStatus }) {
     <button
       onClick={handleVote}
       disabled={isVoted}
-      className={`text-2xl rounded-xl transition-all duration-200 ${
-        isVoted
-          ? "bg-gray-200 cursor-not-allowed"
-          : "hover:bg-gray-100 cursor-pointer"
-      }`}
+      className={`
+        group relative px-4 py-2 rounded-lg transition-all duration-300
+        ${isVoted
+          ? "bg-indigo-100 text-indigo-700"
+          : "bg-gray-100 hover:bg-gray-200 text-gray-700"
+        }
+      `}
     >
-      <span className="inline-flex items-center gap-1 px-3 py-2 rounded-xl text-sm bg-gray-100">
-        {vote.label}
-        <span className="font-medium">{vote.value}</span>
-      </span>
+      <div className="flex items-center gap-3">
+        <span className="font-medium">{vote.label}</span>
+        <span className={`
+          inline-flex items-center justify-center w-6 h-6 rounded-full
+          ${isVoted
+            ? "bg-indigo-200 text-indigo-700"
+            : "bg-gray-200 text-gray-600"
+          }
+        `}>
+          {vote.value}
+        </span>
+      </div>
+      {isVoted && (
+        <span className="absolute inset-0 border-2 border-indigo-400 rounded-lg animate-pulse" />
+      )}
     </button>
   );
 }

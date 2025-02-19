@@ -7,7 +7,7 @@ export default function NextButton() {
 
   return (
     <button
-      className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
+      className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-indigo-700 text-background gap-2 hover:bg-indigo-800 text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
       onClick={fetchJoke}
     >
       Next Joke
